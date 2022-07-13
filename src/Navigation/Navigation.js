@@ -3,11 +3,12 @@ import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import 'react-native-gesture-handler';
 
-import Login from '../screens/Login';
-import Register from '../screens/Register';
-import Dasboard from '../screens/Dasboard';
-import History from '../screens/History';
+import {Login} from '../screens/Login';
+import {Register} from '../screens/Register';
+import {Dasboard} from '../screens/Dasboard';
+import {History} from '../screens/History';
 import auth from '@react-native-firebase/auth';
 
 const Stack = createNativeStackNavigator();
@@ -32,7 +33,7 @@ function LoginScreen() {
   );
 }
 
-function HomeScreen() {
+/*function HomeScreen() {
   return (
     <HomeStack.Navigator>
       <HomeStack.Screen
@@ -47,7 +48,7 @@ function HomeScreen() {
       />
     </HomeStack.Navigator>
   );
-}
+}*/
 
 export default function Navigation() {
   const [signedIn, setSignedIn] = useState(false);
@@ -64,10 +65,17 @@ export default function Navigation() {
     <NavigationContainer>
       <Stack.Navigator>
         {signedIn ? (
-          <Drawer.Navigator initialRouteName="HomeNavigation">
-            <Drawer.Screen name="HomeNavigation" component={HomeScreen} />
-          </Drawer.Navigator>
+          // <Stack.Screen>
+          /* <Drawer.Navigator initialRouteName="Dasboard"> */
+          <Stack.Screen name="Dasboard" component={Dasboard} />
         ) : (
+          // <Drawer.Screen
+          // name="History"
+          // component={History}
+          /*options={{headerShown: false}}*/
+          // />
+          // </Drawer.Navigator>
+          // </Stack.Screen>
           <Stack.Screen
             name="LoginNavigation"
             component={LoginScreen}
