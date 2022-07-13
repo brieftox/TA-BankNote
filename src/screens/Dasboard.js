@@ -6,7 +6,9 @@ import {Calendar} from 'react-native-calendars';
 export default function Dasboard({navigation}) {
   return (
     <View style={styles.Container}>
-      <TouchableHighlight style={styles.Bars}>
+      <TouchableHighlight
+        style={styles.Bars}
+        onPress={() => navigation.openDrawer()}>
         <FontAwesome5 name={'bars'} size={30} color="black" />
       </TouchableHighlight>
       <Text style={styles.Text1}>Smart</Text>

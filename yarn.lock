@@ -2941,11 +2941,6 @@
   "resolved" "https://registry.npmjs.org/dayjs/-/dayjs-1.11.3.tgz"
   "version" "1.11.3"
 
-"debounce@^1.2.0":
-  "integrity" "sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug=="
-  "resolved" "https://registry.npmjs.org/debounce/-/debounce-1.2.1.tgz"
-  "version" "1.2.1"
-
 "debug@^2.2.0", "debug@^2.3.3", "debug@2.6.9":
   "integrity" "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="
   "resolved" "https://registry.npmjs.org/debug/-/debug-2.6.9.tgz"
@@ -6403,6 +6398,11 @@
   dependencies:
     "react-native-codegen" "*"
 
+"react-native-pager-view@*":
+  "integrity" "sha512-3drrYwaLat2fYszymZe3nHMPASJ4aJMaxiejfA1V5SK3OygYmdtmV2u5prX7TnjueJzGSyyaCYEr2JlrRt4YPg=="
+  "resolved" "https://registry.npmjs.org/react-native-pager-view/-/react-native-pager-view-5.4.25.tgz"
+  "version" "5.4.25"
+
 "react-native-reanimated@^2.8.0", "react-native-reanimated@>= 1.0.0":
   "integrity" "sha512-kJvf/UWLBMaGCs9X66MKq5zdFMgwx8D0nHnolbHR7s8ZnbLdb7TlQ/yuzIXqn/9wABfnwtNRI3CyaP1aHWMmZg=="
   "resolved" "https://registry.npmjs.org/react-native-reanimated/-/react-native-reanimated-2.8.0.tgz"
@@ -6428,12 +6428,10 @@
   dependencies:
     "hoist-non-react-statics" "^2.3.1"
 
-"react-native-screens@^1.0.0-alpha.23", "react-native-screens@>= 3.0.0":
-  "integrity" "sha512-tOxHGQUN83MTmQB4ghoQkibqOdGiX4JQEmeyEv96MKWO/x8T2PJv84ECUos9hD3blPRQwVwSpAid1PPPhrVEaw=="
-  "resolved" "https://registry.npmjs.org/react-native-screens/-/react-native-screens-1.0.0-alpha.23.tgz"
-  "version" "1.0.0-alpha.23"
-  dependencies:
-    "debounce" "^1.2.0"
+"react-native-screens@^3.0.0", "react-native-screens@>= 3.0.0":
+  "integrity" "sha512-35II5oxTaVp3OP8y0eLPOPpQkxG4fRKQ+dL1YSE1we5kCZFOU0l/Rn0T79HbyUu1LPwUZr6lZupPs0ULnRyMuQ=="
+  "resolved" "https://registry.npmjs.org/react-native-screens/-/react-native-screens-3.0.0.tgz"
+  "version" "3.0.0"
 
 "react-native-shadow-cards@^1.0.2":
   "integrity" "sha512-cUk9+4T8XTwWPKJzLxmnFia9i0m5PWdLPrtGiShVH5vVH48TZ/8JLBzsUe50tfzTxvMWPvQM1vZE8Sytfj1mjw=="
@@ -6452,6 +6450,11 @@
   "integrity" "sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw=="
   "resolved" "https://registry.npmjs.org/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz"
   "version" "1.0.5"
+
+"react-native-tab-view@^3.1.1":
+  "integrity" "sha512-M5pRN6utQfytKWoKlKVzg5NbkYu308qNoW1khGTtEOTs1k14p2dHJ/BWOJoJYHKbPVUyZldbG9MFT7gUl4YHnw=="
+  "resolved" "https://registry.npmjs.org/react-native-tab-view/-/react-native-tab-view-3.1.1.tgz"
+  "version" "3.1.1"
 
 "react-native-vector-icons@^9.1.0":
   "integrity" "sha512-2AHZ/h9d/+rC0odz+OwbGNlc1Lik/pHhSixn4HfC8RtQ8CxfSBZ6gg7bTLcZhdSvZN+ZEGi30Fj+ZnOSQy+smg=="

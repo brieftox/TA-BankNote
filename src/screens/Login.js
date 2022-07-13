@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   Username: {
-    color: 'white',
+    color: 'black',
     backgroundColor: 'white',
     height: 50,
     width: 300,
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   password: {
+    color: 'black',
     backgroundColor: 'white',
     height: 50,
     width: 300,
