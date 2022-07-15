@@ -4,46 +4,52 @@ import {
   TouchableHighlight,
   FlatList,
   View,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
 export default function History({navigation}) {
-  const [IDBankNotes, setIDBankNotes] = '';
-  const [datahistory, setdatahistory] = {};
+  const [IDBankNotes, setIDBankNotes] = useState('');
+  const [datahistory, setdatahistory] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
-    const uid = auth.user.uid;
-    database()
-      .ref(`users/${uid}`)
-      .once('value', snapshot => {
-        const fetchGauge = snapshot.val();
-        setIDBankNotes(fetchGauge.IDBankNotes);
-        console.log('ID Bank Notes: ', fetchGauge);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    const fetchHistory = async () => {
+      // Ambil UID dari user
+      const uid = auth().currentUser.uid;
+
+      try {
+        // Ambil ID Bank Note berdasarkan UID user
+        const fetchIdBankNote = await database()
+          .ref(`users/${uid}`)
+          .once('value');
+
+        // Setelah ID Bank Note diambil, baca data history berdasarkan ID Bank Note tersebut
+        if (fetchIdBankNote.val().IDBankNotes) {
+          const IDBankNotes = fetchIdBankNote.val().IDBankNotes;
+          const fetchHistoryData = await database()
+            .ref(`BankNotes/${IDBankNotes}`)
+            .once('value');
+          setdatahistory(fetchHistoryData.val());
+          setLoading(false);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchHistory();
   }, []);
 
-  React.useEffect(() => {
-    database()
-      .ref(`BankNotes/${IDBankNotes}`)
-      .once('value', snapshot => {
-        const fetchGauge = snapshot.val();
-        setdatahistory(fetchGauge);
-        console.log('Data History: ', fetchGauge);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
+  console.log('ID Bank Notes: ', IDBankNotes);
+  console.log('Data History: ', datahistory);
 
-  const Item = ({title}) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
+  const Item = ({item}) => (
+    <View style={styles.tableItem}>
+      <Text style={styles.textItem}>{item.tanggal}</Text>
+      <Text style={styles.textItem}>{item.nominal}</Text>
     </View>
   );
 
@@ -58,10 +64,16 @@ export default function History({navigation}) {
       <Text style={styles.Text2}>Tabungan</Text>
       <Text style={styles.Text3}>Please save your money!</Text>
       <View style={styles.Tabungan}>
+        <View style={styles.tableHeader}>
+          <Text style={styles.textHeader}>Tanggal</Text>
+          <Text style={styles.textHeader}>Nominal</Text>
+        </View>
+        {loading ? <ActivityIndicator style={{alignSelf: 'center'}} /> : null}
         <FlatList
           data={datahistory}
           renderItem={Item}
           keyExtractor={item => item.tanggal}
+          refreshing={loading}
         />
       </View>
       <View style={styles.Total}></View>
@@ -129,7 +141,9 @@ const styles = StyleSheet.create({
     width: 300,
     marginTop: 30,
     backgroundColor: 'white',
+    flexDirection: 'column',
     alignSelf: 'center',
+    justifyContent: 'flex-start',
   },
   Total: {
     height: 50,
@@ -146,13 +160,31 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: 'white',
   },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+  tableHeader: {
+    height: 40,
+    width: 300,
+    paddingHorizontal: 10,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  title: {
-    fontSize: 32,
+  textHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  tableItem: {
+    height: 30,
+    width: 300,
+    paddingHorizontal: 10,
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  textItem: {
+    fontSize: 14,
+    textAlign: 'center',
   },
 });
