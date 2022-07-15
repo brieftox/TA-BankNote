@@ -2,7 +2,12 @@ import {StyleSheet, Text, View} from 'react-native';
 import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+} from '@react-navigation/drawer';
 import 'react-native-gesture-handler';
 
 import Login from '../screens/Login';
@@ -35,7 +40,8 @@ function LoginScreen() {
 
 function HomeScreen() {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen
         name="Dasboard"
         component={Dasboard}
@@ -47,6 +53,22 @@ function HomeScreen() {
         options={{headerShown: false}}
       />
     </Drawer.Navigator>
+  );
+}
+
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="Log Out"
+        onPress={() =>
+          auth()
+            .signOut()
+            .then(() => console.log('User signed out!'))
+        }
+      />
+    </DrawerContentScrollView>
   );
 }
 
