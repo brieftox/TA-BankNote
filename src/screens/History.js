@@ -12,9 +12,9 @@ import database from '@react-native-firebase/database';
 import auth from '@react-native-firebase/auth';
 
 export default function History({navigation}) {
-  const [IDBankNotes, setIDBankNotes] = useState('');
   const [datahistory, setdatahistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [jumlah, setJumlah] = useState(0);
 
   React.useEffect(() => {
     const fetchHistory = async () => {
@@ -33,7 +33,15 @@ export default function History({navigation}) {
           const fetchHistoryData = await database()
             .ref(`BankNotes/${IDBankNotes}`)
             .once('value');
+
+          let hitungJumlah = 0;
+          console.log('Fetch History: ', fetchHistoryData.val());
+          for (const itemHistory of fetchHistoryData.val()) {
+            hitungJumlah += itemHistory.nominal;
+          }
+
           setdatahistory(fetchHistoryData.val());
+          setJumlah(hitungJumlah);
           setLoading(false);
         }
       } catch (e) {
@@ -43,7 +51,6 @@ export default function History({navigation}) {
     fetchHistory();
   }, []);
 
-  console.log('ID Bank Notes: ', IDBankNotes);
   console.log('Data History: ', datahistory);
 
   const Item = ({item}) => (
@@ -75,6 +82,10 @@ export default function History({navigation}) {
           keyExtractor={item => item.tanggal}
           refreshing={loading}
         />
+        <View style={styles.tableHeader}>
+          <Text style={styles.textHeader}>Jumlah</Text>
+          <Text style={styles.textHeader}>{jumlah}</Text>
+        </View>
       </View>
       <View style={styles.Total}></View>
     </View>
