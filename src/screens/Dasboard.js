@@ -1,9 +1,51 @@
 import {StyleSheet, Text, TouchableHighlight, View} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {Calendar} from 'react-native-calendars';
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 export default function Dasboard({navigation}) {
+  const [dataKalender, setDataKalender] = useState({});
+
+  React.useEffect(() => {
+    const fetchHistory = async () => {
+      // Ambil UID dari user
+      const uid = auth().currentUser.uid;
+
+      try {
+        // Ambil ID Bank Note berdasarkan UID user
+        const fetchIdBankNote = await database()
+          .ref(`users/${uid}`)
+          .once('value');
+
+        // Setelah ID Bank Note diambil, baca data history berdasarkan ID Bank Note tersebut
+        if (fetchIdBankNote.val().IDBankNotes) {
+          const IDBankNotes = fetchIdBankNote.val().IDBankNotes;
+          const fetchHistoryData = await database()
+            .ref(`BankNotes/${IDBankNotes}`)
+            .once('value');
+
+          const warnaKalender = {};
+          for (const itemHistory of fetchHistoryData.val()) {
+            warnaKalender[`${itemHistory.tanggal}`] = {
+              color: itemHistory.warna,
+              startingDay: true,
+              endingDay: true,
+              textColor: 'black',
+            };
+          }
+
+          console.log('Warna Kalender: ', warnaKalender);
+          setDataKalender(warnaKalender);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchHistory();
+  }, []);
+
   return (
     <View style={styles.Container}>
       <TouchableHighlight
@@ -24,15 +66,15 @@ export default function Dasboard({navigation}) {
       </View>
       <View style={styles.Kalender}>
         <Calendar
-          current={'2022-06-20'}
-          minDate={'2012-06-10'}
+          // current={'2022-06-20'}
+          // minDate={'2012-06-10'}
           markingType={'period'}
           theme={{
             calendarBackground: '#333248',
             textSectionTitleColor: 'white',
             textSectionTitleDisabledColor: 'gray',
-            dayTextColor: 'red',
-            todayTextColor: 'white',
+            dayTextColor: 'white',
+            todayTextColor: 'gray',
             selectedDayTextColor: 'white',
             monthTextColor: 'white',
             indicatorColor: 'white',
@@ -52,17 +94,7 @@ export default function Dasboard({navigation}) {
               },
             },
           }}
-          markedDates={{
-            '2022-06-17': {disabled: true},
-            '2022-06-08': {textColor: 'pink'},
-            '2022-06-09': {textColor: 'pink'},
-            '2022-06-14': {startingDay: true, color: 'green', endingDay: true},
-            '2022-06-21': {startingDay: true, color: 'green'},
-            '2022-06-22': {endingDay: true, color: 'gray'},
-            '2022-06-24': {startingDay: true, color: 'gray'},
-            '2022-06-25': {color: 'gray'},
-            '2022-06-26': {endingDay: true, color: 'gray'},
-          }}
+          markedDates={dataKalender}
         />
       </View>
     </View>
