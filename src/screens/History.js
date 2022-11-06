@@ -35,13 +35,22 @@ export default function History({navigation}) {
             .once('value');
 
           let hitungJumlah = 0;
+          let historyDataTemp = [];
           console.log('Fetch History: ', fetchHistoryData.val());
-          for (const itemHistory of fetchHistoryData.val()) {
-            hitungJumlah += itemHistory.nominal;
+          for (const itemHistory in fetchHistoryData.val()) {
+            // hitungJumlah += fetchHistoryData.val()[itemHistory].nominal;
+            const item = fetchHistoryData.val()[itemHistory];
+            item.id = itemHistory;
+            const nominalNoDot = Number(item.nominal.replace(/[.]+/g, ''));
+            hitungJumlah += nominalNoDot;
+            historyDataTemp.push(item);
           }
 
-          setdatahistory(fetchHistoryData.val());
-          setJumlah(hitungJumlah);
+          const jumlahRupiah = hitungJumlah
+            .toFixed(2)
+            .replace(/\d(?=(\d{3})+\.)/g, '$&,');
+          setdatahistory(historyDataTemp);
+          setJumlah(jumlahRupiah);
           setLoading(false);
         }
       } catch (e) {
@@ -55,8 +64,8 @@ export default function History({navigation}) {
 
   const Item = ({item}) => (
     <View style={styles.tableItem}>
-      <Text style={styles.textItem}>{item.tanggal}</Text>
-      <Text style={styles.textItem}>{item.nominal}</Text>
+      <Text style={styles.textItem}>{item.waktu}</Text>
+      <Text style={styles.textItem}>Rp{item.nominal}</Text>
     </View>
   );
 
@@ -72,19 +81,19 @@ export default function History({navigation}) {
       <Text style={styles.Text3}>Please save your money!</Text>
       <View style={styles.Tabungan}>
         <View style={styles.tableHeader}>
-          <Text style={styles.textHeader}>Tanggal</Text>
+          <Text style={styles.textHeader}>Waktu</Text>
           <Text style={styles.textHeader}>Nominal</Text>
         </View>
         {loading ? <ActivityIndicator style={{alignSelf: 'center'}} /> : null}
         <FlatList
           data={datahistory}
           renderItem={Item}
-          keyExtractor={item => item.tanggal}
+          keyExtractor={item => item.id}
           refreshing={loading}
         />
         <View style={styles.tableHeader}>
           <Text style={styles.textHeader}>Jumlah</Text>
-          <Text style={styles.textHeader}>{jumlah}</Text>
+          <Text style={styles.textHeader}>Rp{jumlah}</Text>
         </View>
       </View>
       <View style={styles.Total}></View>
@@ -184,6 +193,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
+    color: 'black',
   },
   tableItem: {
     height: 30,
@@ -197,5 +207,6 @@ const styles = StyleSheet.create({
   textItem: {
     fontSize: 14,
     textAlign: 'center',
+    color: 'black',
   },
 });

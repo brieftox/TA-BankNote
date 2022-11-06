@@ -27,9 +27,9 @@ export default function Dasboard({navigation}) {
             .once('value');
 
           const warnaKalender = {};
-          for (const itemHistory of fetchHistoryData.val()) {
+          for (const itemHistory in fetchHistoryData.val()) {
             warnaKalender[`${itemHistory.tanggal}`] = {
-              color: itemHistory.warna,
+              color: fetchHistoryData.val()[itemHistory].warna, // itemHistory.warna,
               startingDay: true,
               endingDay: true,
               textColor: 'black',
